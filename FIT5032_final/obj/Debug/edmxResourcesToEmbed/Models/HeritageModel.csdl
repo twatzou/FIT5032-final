@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="HeritageModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="HeritageModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="HeritageSet" EntityType="HeritageModel.Heritage" />
+    <EntitySet Name="RouteSet" EntityType="HeritageModel.Route" />
+    <AssociationSet Name="RouteHeritage" Association="HeritageModel.RouteHeritage">
+      <End Role="Route" EntitySet="RouteSet" />
+      <End Role="Heritage" EntitySet="HeritageSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Heritage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="Picture" Type="String" Nullable="false" />
+    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Route" Relationship="HeritageModel.RouteHeritage" FromRole="Heritage" ToRole="Route" />
+    <Property Name="RouteId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Route">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UpdatedDate" Type="DateTime" Nullable="false" />
+    <Property Name="Price" Type="String" Nullable="false" />
+    <NavigationProperty Name="Heritage" Relationship="HeritageModel.RouteHeritage" FromRole="Route" ToRole="Heritage" />
+  </EntityType>
+  <Association Name="RouteHeritage">
+    <End Type="HeritageModel.Route" Role="Route" Multiplicity="1" />
+    <End Type="HeritageModel.Heritage" Role="Heritage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Route">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Heritage">
+        <PropertyRef Name="RouteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
